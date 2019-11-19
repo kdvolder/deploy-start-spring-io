@@ -2,7 +2,8 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: openjdk:8-jdk
+    repository: openjdk
+    tag: 8-jdk
 inputs:
 - name: start-git
 - name: tasks-git
