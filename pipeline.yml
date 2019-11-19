@@ -3,6 +3,11 @@ resources:
   type: git
   source:
     uri: https://github.com/kdvolder/deploy-start-spring-io.git
+- name: weekly
+  type: time
+  check_every: 24h
+  source:
+    interval: 160h
 - name: start-git
   type: git
   source:
@@ -19,6 +24,8 @@ jobs:
 - name: build-and-push
   plan:
   - in_parallel:
+    - get: weekly
+      trigger: true
     - get: start-git
       trigger: true
     - get: tasks-git
