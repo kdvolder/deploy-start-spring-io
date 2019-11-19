@@ -34,4 +34,5 @@ jobs:
   - put: cf
     params:
       manifest: tasks-git/manifest.yml
+      path: output/start-site-exec.jar
       show_app_log: true
