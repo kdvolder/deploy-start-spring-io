@@ -1,3 +1,9 @@
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
 resources:
 - name: tasks-git
   type: git
@@ -20,8 +26,18 @@ resources:
     space: sts-development
     username: ((cf_user))
     password: ((cf_password))
+- name: slack-notification
+  type: slack-notification
+  source:
+    url: ((slack_webhook))
 jobs:
 - name: build-and-push
+  on_failure:
+    put: slack-notification
+    params:
+      text: |
+        Concourse ${BUILD_PIPELINE_NAME}/${BUILD_JOB_NAME}/${BUILD_NAME} has failed!
+
   plan:
   - in_parallel:
     - get: weekly
@@ -36,3 +52,4 @@ jobs:
       manifest: tasks-git/manifest.yml
       path: output/start-site-exec.jar
       show_app_log: true
+
