@@ -1,0 +1,30 @@
+resources:
+- name: tasks-git
+  type: git
+  source:
+    uri: https://github.com/kdvolder/deploy-start-spring-io.git
+- name: start
+  type: git
+  source:
+    uri: https://github.com/spring-io/start.spring.io.git
+- name: cf
+  type: cf
+  source:
+    api: ((cf_api_url))
+    organization: FrameworksAndRuntimes
+    space: sts-development
+    username: ((cf_user))
+    password: ((cf_password))
+jobs:
+- name: build-and-push
+  plan:
+  - in_parallel:
+    - get: start
+      trigger: true
+    - get: tasks-git
+  - task: build
+    file: tasks-git/tasks/build.yml
+  - put: cf
+    params:
+      manifest: tasks-git/manifest.yml
+      show_app_log: true

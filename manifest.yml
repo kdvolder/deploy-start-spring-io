@@ -1,0 +1,4 @@
+applications:
+- name: start-sts-test
+  buildpack: java_buildpack
+  path: output/start-site-exec.jar
