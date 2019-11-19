@@ -3,7 +3,7 @@ resources:
   type: git
   source:
     uri: https://github.com/kdvolder/deploy-start-spring-io.git
-- name: start
+- name: start-git
   type: git
   source:
     uri: https://github.com/spring-io/start.spring.io.git
@@ -19,7 +19,7 @@ jobs:
 - name: build-and-push
   plan:
   - in_parallel:
-    - get: start
+    - get: start-git
       trigger: true
     - get: tasks-git
   - task: build
